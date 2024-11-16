@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class DataManager : SingletonBase<DataManager>
 {
@@ -12,7 +11,7 @@ public class DataManager : SingletonBase<DataManager>
         set { score = value; }
     }
 
-    public TextAsset csvFile;
+    public TextAsset csvFile; // Assign CSV file in the Inspector
     public List<DialogueData> dialogues = new List<DialogueData>();
 
     void Awake()
@@ -23,26 +22,26 @@ public class DataManager : SingletonBase<DataManager>
     void LoadCSV()
     {
         var lines = csvFile.text.Split('\n');
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length; i++) // Skip header row
         {
             var values = lines[i].Split(',');
-            if (values.Length >= 8)
+            if (values.Length >= 13) // Ensure sufficient columns
             {
-                Debug.Log(csvFile);
-                Debug.Log(csvFile.text);
                 DialogueData data = new DialogueData
                 {
-                    ID = int.Parse(values[0]),
-                    Speaker = values[1],
-                    Line = values[2],
-                    IsOption = int.Parse(values[3]) == 1,
-                    Question = values[4],
-                    Option1 = values[5],
-                    Option2 = values[6],
-                    Option3 = values[7],
-                    ResultA = int.Parse(values[8]),
-                    ResultB = int.Parse(values[9]),
-                    ResultC = int.Parse(values[10])
+                    DialogID = values[0],
+                    ID = int.Parse(values[1]),
+                    Speaker = values[2],
+                    Line = values[3],
+                    IsOption = int.Parse(values[4]) == 1,
+                    Question = values[5],
+                    OptionA = values[6],
+                    OptionB = values[7],
+                    OptionC = values[8],
+                    Result1 = int.Parse(values[9]),
+                    Result2 = int.Parse(values[10]),
+                    Result3 = int.Parse(values[11]),
+                    NextIDs = values[12] // Delimited NextIDs
                 };
                 dialogues.Add(data);
             }
@@ -53,15 +52,17 @@ public class DataManager : SingletonBase<DataManager>
 [System.Serializable]
 public class DialogueData
 {
-    public int ID;
+    public string DialogID; // Conversation ID
+    public int ID; // Line ID within conversation
     public string Speaker;
     public string Line;
     public bool IsOption;
     public string Question;
-    public string Option1;
-    public string Option2;
-    public string Option3;
-    public int ResultA;
-    public int ResultB;
-    public int ResultC;
+    public string OptionA;
+    public string OptionB;
+    public string OptionC;
+    public int Result1;
+    public int Result2;
+    public int Result3;
+    public string NextIDs; // Delimited next IDs (e.g., "3;4;5")
 }
