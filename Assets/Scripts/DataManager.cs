@@ -25,7 +25,7 @@ public class DataManager : SingletonBase<DataManager>
         for (int i = 1; i < lines.Length; i++)
         {
             var values = lines[i].Split(',');
-            if (values.Length >= 12)
+            if (values.Length >= 13)
             {
                 DialogueData data = new DialogueData
                 {
@@ -41,6 +41,7 @@ public class DataManager : SingletonBase<DataManager>
                     Result1 = int.Parse(values[9]),
                     Result2 = int.Parse(values[10]),
                     Result3 = int.Parse(values[11]),
+                    NextDialogID = int.Parse(values[12])
                 };
                 dialogues.Add(data);
             }
@@ -63,4 +64,5 @@ public class DialogueData
     public int Result1;
     public int Result2;
     public int Result3;
+    public int NextDialogID;
 }

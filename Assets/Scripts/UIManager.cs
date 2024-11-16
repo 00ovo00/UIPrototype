@@ -66,8 +66,9 @@ public class UIManager : SingletonBase<UIManager>
         {
             scoreAlert.SetActive(false);
             isResult = false;
-            StartNewConversation(++curDialogID);
-            if (curDialogID == 3)
+            int nextID = _dataManager.dialogues[curID].NextDialogID;
+            StartNewConversation(nextID);
+            if (nextID == -1)
             {
                 UnityEditor.EditorApplication.isPlaying = false;
             }
