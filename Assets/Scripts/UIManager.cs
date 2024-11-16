@@ -36,9 +36,9 @@ public class UIManager : SingletonBase<UIManager>
             dialogUI.SetActive(false);
             optionUI.SetActive(true);
             questionTxt.text = data.Question;
-            optionAButton.GetComponentInChildren<Text>().text = data.OptionA;
-            optionBButton.GetComponentInChildren<Text>().text = data.OptionB;
-            optionCButton.GetComponentInChildren<Text>().text = data.OptionC;
+            optionAButton.GetComponentInChildren<TextMeshProUGUI>().text = data.Option1;
+            optionBButton.GetComponentInChildren<TextMeshProUGUI>().text = data.Option2;
+            optionCButton.GetComponentInChildren<TextMeshProUGUI>().text = data.Option3;
 
             optionAButton.onClick.AddListener(() => SelectOption(data.ResultA));
             optionBButton.onClick.AddListener(() => SelectOption(data.ResultB));

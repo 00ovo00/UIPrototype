@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DataManager : SingletonBase<DataManager>
 {
@@ -14,7 +15,7 @@ public class DataManager : SingletonBase<DataManager>
     public TextAsset csvFile;
     public List<DialogueData> dialogues = new List<DialogueData>();
 
-    void Start()
+    void Awake()
     {
         LoadCSV();
     }
@@ -22,11 +23,13 @@ public class DataManager : SingletonBase<DataManager>
     void LoadCSV()
     {
         var lines = csvFile.text.Split('\n');
-        foreach (var line in lines)
+        for (int i = 1; i < lines.Length; i++)
         {
-            var values = line.Split(',');
+            var values = lines[i].Split(',');
             if (values.Length >= 8)
             {
+                Debug.Log(csvFile);
+                Debug.Log(csvFile.text);
                 DialogueData data = new DialogueData
                 {
                     ID = int.Parse(values[0]),
@@ -34,9 +37,9 @@ public class DataManager : SingletonBase<DataManager>
                     Line = values[2],
                     IsOption = int.Parse(values[3]) == 1,
                     Question = values[4],
-                    OptionA = values[5],
-                    OptionB = values[6],
-                    OptionC = values[7],
+                    Option1 = values[5],
+                    Option2 = values[6],
+                    Option3 = values[7],
                     ResultA = int.Parse(values[8]),
                     ResultB = int.Parse(values[9]),
                     ResultC = int.Parse(values[10])
@@ -55,9 +58,9 @@ public class DialogueData
     public string Line;
     public bool IsOption;
     public string Question;
-    public string OptionA;
-    public string OptionB;
-    public string OptionC;
+    public string Option1;
+    public string Option2;
+    public string Option3;
     public int ResultA;
     public int ResultB;
     public int ResultC;
