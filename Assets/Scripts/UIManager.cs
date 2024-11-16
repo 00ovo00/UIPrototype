@@ -18,7 +18,8 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private GameObject scoreAlert;
     [SerializeField] private TextMeshProUGUI scoreChangeTxt;
 
-    private int currentID = 0;
+    private int curDialogID = 0;
+    private int curID = 0;
     private DataManager _dataManager;
     private bool isResult;
 
@@ -31,7 +32,7 @@ public class UIManager : SingletonBase<UIManager>
 
     public void ShowDialogue()
     {
-        DialogueData data = _dataManager.dialogues[currentID];
+        DialogueData data = _dataManager.dialogues[curID];
         if (data.IsOption)
         {
             dialogUI.SetActive(false);
@@ -65,9 +66,13 @@ public class UIManager : SingletonBase<UIManager>
         {
             scoreAlert.SetActive(false);
             isResult = false;
-            StartNewConversation("대화1");            
+            StartNewConversation(++curDialogID);
+            if (curDialogID == 3)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+            }
         }
-        currentID++;
+        curID++;
         ShowDialogue();
     }
 
@@ -75,7 +80,7 @@ public class UIManager : SingletonBase<UIManager>
     {
         DataManager.Instance.Score += result;
         isResult = true;
-        currentID += num;
+        curID += num;
 
         if (result != 0)
         {
@@ -85,12 +90,12 @@ public class UIManager : SingletonBase<UIManager>
         ShowDialogue();
     }
 
-    public void StartNewConversation(string dialogID)
+    public void StartNewConversation(int dialogID)
     {
         DialogueData firstDialogue = _dataManager.dialogues.Find(d => d.DialogID == dialogID && d.ID == 0);
         if (firstDialogue != null)
         {
-            currentID = _dataManager.dialogues.IndexOf(firstDialogue) - 1;
+            curID = _dataManager.dialogues.IndexOf(firstDialogue) - 1;
             ShowDialogue();
         }
         else
